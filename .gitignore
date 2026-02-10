@@ -1,0 +1,13 @@
+*.gram
+/build
+*.bin
+essay.txt
+/*.userdb
+*.ldb
+*.log
+.DS_Store
+.vscode/
+
+user.yaml
+installation.yaml
+default.yaml

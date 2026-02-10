@@ -1,0 +1,99 @@
+# Rime schema settings
+# encoding: utf-8
+
+patch:
+  translator/enable_user_dict: false  # 是否開啟用戶詞典
+  # reverse_lookup/prefix: "`"         # 反查鍵
+  # menu/page_size: 8                  # 每頁候選字數
+
+  # 編碼顯示格式
+  # 【格式一】小狼毫原版 : xhx （難竹難）
+  # translator/preedit_format:  # 已輸入編碼
+  #   - 'xform/^([a-z]*)$/$1\t（\U$1\E）/'
+  #   - "xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|"
+  # translator/comment_format:  # 編碼提示
+  #   - "xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符～|"
+  # reverse_lookup/comment_format:  # 反查提示
+  #   - "xlit|abcdefghijklmnopqrstuvwxyz|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|"
+  # 【格式二】衹顯示倉頡字母 : 重竹難
+  translator/preedit_format:
+    - 'xform/(?<![^x])x/#/'
+    - "xlit|abcdefghijklmnopqrstuvwxyz#|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜片重|"
+  translator/comment_format:
+    - 'xform/(?<![^x])x/#/'
+    - "xlit|abcdefghijklmnopqrstuvwxyz#~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜片重～|"
+  reverse_lookup/comment_format:
+    - "xlit|abcdefghijklmnopqrstuvwxyz#~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜片重～|"
+  # 【格式三】衹顯示小寫英文字母 : xhx
+  # translator/preedit_format:      # 清空
+  # translator/comment_format:      # 清空
+  # reverse_lookup/comment_format:  # 清空
+  # 【格式四】衹顯示大寫英文字母 : XHX
+  # translator/preedit_format:
+  #   - 'xform/^([a-z]*)$/\U$1\E/'
+  # translator/comment_format:
+  #   - "xlit|abcdefghijklmnopqrstuvwxyz#~|ABCDEFGHIJKLMNOPQRSTUVWXYZ#~|"
+  # reverse_lookup/comment_format:
+  #   - 'xform/^([a-z]*)$/\U$1\E/'
+
+  # 修改部分顯示設置
+  schema/name: Cangjie5 (Trad.)
+
+  # 修改開關設置
+  switches:
+    - name: ascii_mode
+      reset: 0
+      states: [ Chinese, Western ]
+    - name: full_shape
+      states: [ Halfwidth, Fullwidth ]
+    - name: simplification
+      states: [ Traditional, Simplified ]
+    - name: extended_charset
+      states: [ Standard, Extended ]
+    - name: ascii_punct
+      states: [ 。，, ．， ]
+
+  # 將反查修改為以`開始，防止'出現選單，同時讓;鍵直出
+  recognizer:
+    import_preset: default
+    patterns:
+      punct: "^/([0-9]0?|[a-z]+)$"
+      reverse_lookup: "`[a-z]*$"
+
+  # 自定義標點符號
+  punctuator:
+    import_preset: symbols
+    half_shape:
+      '=': [ '=', '＝', '々', '〃' ]
+      '^': '^'
+      '''': ''''
+      '"': '"'
+      '_': '_'
+    full_shape:
+      '^': '^'
+      '''': ''''
+      '"': '"'
+      '_': '_'
+
+
+#以下是 easy english 的配置
+__patch:
+# Rx: BlindingDark/rime-easy-en:customize:schema=cangjie5_tc {
+  - patch/+:
+      __include: easy_en:/patch
+# }
+
+#以下是 rime emoji 的配置
+__patch:
+# Rx: emoji:customize:schema=cangjie5_tc {
+  - patch/+:
+      __include: emoji_suggestion:/patch
+# }
+
+#以下是 lotem/rime-octagram-data 的配置
+
+# __patch:
+# # Rx: lotem/rime-octagram-data:customize:schema=cangjie5_tc,model=hant {
+#   - patch/+:
+#       __include: grammar:/hant
+# # }
